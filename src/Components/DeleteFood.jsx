@@ -1,14 +1,30 @@
-import { Button, Modal } from 'antd';
+import { Button, Modal, notification, Space  } from 'antd';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 const DeleteFood = () => {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
+  const [modalText, setModalText] = useState('Ban co chac chan muon xoa khong');
+
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: 'Notification Title',
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+    });
+  };
+  useEffect(() =>{
+<Space>
+    <Button onClick={() => openNotificationWithIcon('success')}>Success</Button>
+    </Space>
+  },[setModalText]) 
+  
 
   const showModal = () => {
     setVisible(true);
   };
+  
 
   const handleOk = () => {
     setModalText('The modal will be closed after two seconds');
@@ -27,7 +43,7 @@ const DeleteFood = () => {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        Open Modal with async logic
+        Delete
       </Button>
       <Modal
         title="Title"

@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import foodService from '../Service/FoodService';
+import DeleteFood from './DeleteFood';
 
 const EditableCell = ({
   editing,
@@ -45,7 +46,6 @@ const EditableCell = ({
 const FoodList = () => {
   const [foodList, setFoodList] = useState([]);
   const [form] = Form.useForm();
-  // const [data, setData] = useState();
   const [editingKey, setEditingKey] = useState('');
 
   const isEditing = (record) => record.key === editingKey;
@@ -171,7 +171,7 @@ const FoodList = () => {
                 marginLeft: 8,
               }}
             >
-              <a >Delete</a>
+              <DeleteFood/>
             </Typography.Link>
           </span>
         ) : (
@@ -219,16 +219,6 @@ const FoodList = () => {
           onChange: cancel,
         }}
       />
-      {/* {foodList.Pageable?.content.map((item) => (
-        <ul>
-          <li>{item.id}</li>
-          <li>{item.name}</li>
-          <li>{item.price}</li>
-          <li>{item.status}</li>
-          <li>{item.image}</li>
-        </ul>
-
-      ))} */}
     </Form>
   );
 };

@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios, { Axios } from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const { Option } = Select;
 const normFile = (e) => {
   console.log('Upload event:', e);
@@ -36,7 +36,7 @@ const normFile = (e) => {
 const formItemLayout = {
   labelCol: {
     xs: {
-      span: 24,
+      span: 16,
     },
     sm: {
       span: 8,
@@ -44,10 +44,10 @@ const formItemLayout = {
   },
   wrapperCol: {
     xs: {
-      span: 24,
+      span: 16,
     },
     sm: {
-      span: 16,
+      span: 8,
     },
   },
 };
@@ -66,6 +66,7 @@ const tailFormItemLayout = {
 
 const AddFood = () => {
   const [form] = Form.useForm();
+  let navigate = useNavigate();
   const [isRedirectSuccess, setisRedirectSuccess] = useState(false);
   const [isLoading, serisLoading] = useState(false);
   // const [content, setcontent] = useState("");
@@ -164,7 +165,7 @@ const AddFood = () => {
       // name: values.name,
       // slug: values.slug,
       // description: values.description,
-      category: {id:values.category},
+      category: { id: values.category },
       // status: values.status,
       // price: values.price,
       // image: image,
@@ -182,34 +183,17 @@ const AddFood = () => {
       // }
     };
     console.log(dataConverted)
-    // await foodService
-    //   .createNew(dataConverted)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setisRedirectSuccess(true);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+
     axios.post(`https://order-foods.herokuapp.com/api/v1/foods/create`, dataConverted)
       .then(res => {
         console.log(res.data);
       }).catch(err => {
         console.log(err);
       })
-    // fetch("https://order-foods.herokuapp.com/api/v1/foods/create",{
-    //   method:'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //     // 'Content-Type': 'application/x-www-form-urlencoded',
-    //   },
-    //   body: JSON.stringify(dataConverted)
-    // }).then(res => res.json()).then(data => {
-    //   console.log(data);
-    // })
+    navigate("/list")
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -354,11 +338,11 @@ const AddFood = () => {
 
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
-        <Link to = {"/list"}>
-          <Button type="primary" htmlType="submit">
+        {/* <Link to={"/list"}> */}
+        <Button type="primary" htmlType="submit">
           Add
         </Button>
-        </Link>
+        {/* </Link> */}
       </Form.Item>
     </Form>
   );

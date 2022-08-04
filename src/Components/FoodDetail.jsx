@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios, { Axios } from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 const { Option } = Select;
 const normFile = (e) => {
   console.log('Upload event:', e);
@@ -36,7 +36,7 @@ const normFile = (e) => {
 const formItemLayout = {
   labelCol: {
     xs: {
-      span: 24,
+      span: 16,
     },
     sm: {
       span: 8,
@@ -44,10 +44,10 @@ const formItemLayout = {
   },
   wrapperCol: {
     xs: {
-      span: 24,
+      span: 16,
     },
     sm: {
-      span: 16,
+      span: 8,
     },
   },
 };
@@ -66,22 +66,18 @@ const tailFormItemLayout = {
 
 const FoodDetail = () => {
   const [form] = Form.useForm();
+  let navigate = useNavigate();
   const [isRedirectSuccess, setisRedirectSuccess] = useState(false);
   const [isLoading, serisLoading] = useState(false);
   // const [content, setcontent] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-  const [foodList, setFoodList] = useState([]);
   const [status, setStatus] = useState("");
   const [category, setCategory] = useState("");
   const { id } = useParams()
-  const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false)
 
- 
+
 
   console.log(id)
   const uploadImage = async e => {
@@ -155,30 +151,20 @@ const FoodDetail = () => {
 
   const getDetails = async () => {
     await foodService.getDetails(id).then((res) => {
+      console.log(res.data.image, 'res.data.image');
       form.setFieldsValue({ id: res.data.id });
-      form.setFieldsValue({ name: res.data.name});
-      form.setFieldValue({slug: res.data.slug});
-      form.setFieldValue({price: res.data.price});
-      form.setFieldValue({description: res.data.description});
-      form.setFieldValue({category: res.data.category});
-
-
+      form.setFieldsValue({ name: res.data.name });
+      form.setFieldsValue({ slug: res.data.slug });
+      form.setFieldsValue({ price: res.data.price });
+      form.setFieldsValue({ description: res.data.description });
+      form.setFieldsValue({ category: res.data.category.name });
+      form.setFieldsValue({ status: res.data.status });
+      form.setFieldsValue({ image: res.data.image });
+      if (res.data.image) {
+        setImage(res.data.image)
+      }
     });
   };
-  // const _fillForm = (data) => {
-  //   this.setState(prevState => {
-  //     let form = {};
-  //     Object.keys(data).forEach(k => {
-  //       form[k] = {
-  //         value: data[k],
-  //         err: '',
-  //       }
-  //     })
-  //     form.dirty = false;
-  //     prevState.form = form;
-  //     return prevState;
-  //   })
-  // }
 
   const handleChangeStatus = (ev) => {
     setStatus(ev.target.value)
@@ -204,34 +190,16 @@ const FoodDetail = () => {
 
     };
     console.log(dataConverted)
-    // await foodService
-    //   .createNew(dataConverted)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setisRedirectSuccess(true);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    axios.post(`https://order-foods.herokuapp.com/api/v1/foods/create`, dataConverted)
+    axios.put(`https://order-foods.herokuapp.com/api/v1/foods/${values.id}`, dataConverted)
       .then(res => {
         console.log(res.data);
       }).catch(err => {
         console.log(err);
       })
-    // fetch("https://order-foods.herokuapp.com/api/v1/foods/create",{
-    //   method:'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //     // 'Content-Type': 'application/x-www-form-urlencoded',
-    //   },
-    //   body: JSON.stringify(dataConverted)
-    // }).then(res => res.json()).then(data => {
-    //   console.log(data);
-    // })
+      navigate("/list")
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -247,10 +215,8 @@ const FoodDetail = () => {
       scrollToFirstError
     >
       <Form.Item
-        id="id"
         label="Id"
         name="id"
-        value={id.value}
         onChange={(ev) => this._setValue(ev, 'id')}
         rules={[
           {
@@ -260,11 +226,11 @@ const FoodDetail = () => {
       >
         <Input />
       </Form.Item>
+
       <Form.Item
-        id="name"
         label="name"
         name="name"
-        value={name.value}
+
         onChange={(ev) => this._setValue(ev, 'name')}
         rules={[
           {
@@ -274,12 +240,10 @@ const FoodDetail = () => {
       >
         <Input />
       </Form.Item>
+
       <Form.Item
-        id="slug"
         label="slug"
-        name ="slug"
-        value={slug.value}
-        onChange={(ev) => this._setValue(ev, 'slug')}
+        name="slug"
         rules={[
           {
             required: true,
@@ -290,12 +254,8 @@ const FoodDetail = () => {
       </Form.Item>
 
       <Form.Item
-        id="price"
         name="price"
-        value={price.value}
         label="Price"
-
-        onChange={(ev) => this._setValue(ev, 'price')}
         rules={[
           {
             required: true,
@@ -311,11 +271,8 @@ const FoodDetail = () => {
       </Form.Item>
 
       <Form.Item
-        id="description"
         name="description"
         label="description"
-        value={description.value}
-        onChange={(ev) => this._setValue(ev, 'description')}
         rules={[
           {
             required: true,
@@ -327,10 +284,9 @@ const FoodDetail = () => {
       </Form.Item>
 
       <Form.Item
-        id="category"
+
         name="category"
         label="Category"
-        value={category}
         onChange={handleChangeCategory}
       >
         <Select placeholder="select category">
@@ -341,10 +297,8 @@ const FoodDetail = () => {
       </Form.Item>
 
       <Form.Item
-        id="status"
         name="status"
         label="Status"
-        value={status}
         onChange={handleChangeStatus}
       >
         <Select placeholder="select status">
@@ -357,12 +311,10 @@ const FoodDetail = () => {
       <Form.Item
         name="image"
         label="image"
-        value={image}
       >
 
         <div>
           <input type="file" name="file" placeholder="Upload an Image" onChange={uploadImage}
-
           />
         </div>
         {
