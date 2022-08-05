@@ -21,7 +21,7 @@ import foodService from "../Service/FoodService";
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { useEffect } from 'react';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 const { Option } = Select;
 const normFile = (e) => {
@@ -36,7 +36,7 @@ const normFile = (e) => {
 const formItemLayout = {
   labelCol: {
     xs: {
-      span: 16,
+      span: 6,
     },
     sm: {
       span: 8,
@@ -98,17 +98,6 @@ const FoodDetail = () => {
     setLoading(false)
   }
 
-  const _setValue = (ev, key) => {
-    ev.persist();
-    this.setState(prevState => {
-      prevState.form.dirty = false;
-      prevState.form[key] = {
-        value: ev.target.value,
-        err: this._getInvalidErr(ev.target),
-      }
-      return prevState;
-    });
-  }
 
   const [foodStatus] = useState([
     {
@@ -186,7 +175,6 @@ const FoodDetail = () => {
       "price": values.price,
       "description": values.description,
       "status": values.status,
-      "mealTime": null,
 
     };
     console.log(dataConverted)
@@ -217,7 +205,6 @@ const FoodDetail = () => {
       <Form.Item
         label="Id"
         name="id"
-        onChange={(ev) => this._setValue(ev, 'id')}
         rules={[
           {
             required: true,
@@ -227,11 +214,20 @@ const FoodDetail = () => {
         <Input />
       </Form.Item>
 
+      {/* <Form.Item
+        label="Name"
+        name= "name"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item> */}
       <Form.Item
-        label="name"
+        label="Name"
         name="name"
-
-        onChange={(ev) => this._setValue(ev, 'name')}
         rules={[
           {
             required: true,
@@ -240,10 +236,11 @@ const FoodDetail = () => {
       >
         <Input />
       </Form.Item>
+
 
       <Form.Item
         label="slug"
-        name="slug"
+        name ="slug"
         rules={[
           {
             required: true,
@@ -252,22 +249,16 @@ const FoodDetail = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
-        name="price"
-        label="Price"
+        label="price"
+        name ="price"
         rules={[
           {
             required: true,
-            message: 'Please input donation amount!',
           },
         ]}
       >
-        <InputNumber
-          style={{
-            width: '100%',
-          }}
-        />
+        <Input />
       </Form.Item>
 
       <Form.Item
@@ -287,6 +278,7 @@ const FoodDetail = () => {
 
         name="category"
         label="Category"
+        value={category}
         onChange={handleChangeCategory}
       >
         <Select placeholder="select category">
@@ -299,6 +291,7 @@ const FoodDetail = () => {
       <Form.Item
         name="status"
         label="Status"
+        value={status}
         onChange={handleChangeStatus}
       >
         <Select placeholder="select status">
