@@ -50,16 +50,16 @@ const FoodList = () => {
 
   const isEditing = (record) => record.key === editingKey;
 
-  const edit = (record) => {
-    form.setFieldsValue({
-      id: '',
-      name: '',
-      image: '',
-      price: '',
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
+  // const edit = (record) => {
+  //   form.setFieldsValue({
+  //     id: '',
+  //     name: '',
+  //     image: '',
+  //     price: '',
+  //     ...record,
+  //   });
+  //   setEditingKey(record.key);
+  // };
 
   const cancel = () => {
     setEditingKey('');
@@ -131,13 +131,13 @@ const FoodList = () => {
     {
       title: 'description',
       dataIndex: 'description',
-      width: '20%',
+      width: '10%',
       editable: true,
     },
     {
       title: 'price',
       dataIndex: 'price',
-      width: '20%',
+      width: '10%',
       editable: true,
     },
     {
@@ -160,10 +160,7 @@ const FoodList = () => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <Link to={`/details/${id}`}>
-              <button >Details</button>
-            </Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            {/* <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
               <button>Cancel</button>
             </Popconfirm>
             <Typography.Link
@@ -172,11 +169,15 @@ const FoodList = () => {
               }}
             >
               <DeleteFood/>
-            </Typography.Link>
+            </Typography.Link> */}
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            Edit
+          <Typography.Link>
+            <Link to={`/details/${id}`}>
+              <button >Details</button>
+            </Link>
+              <button >Add to cart</button>
+
           </Typography.Link>
         )
 
