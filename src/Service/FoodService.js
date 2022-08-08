@@ -35,7 +35,7 @@ class FoodService {
     return await axios.post(BASE_URL_SERVER + API_ENDPOINT.CREATE_NEW, data);
   };
 
-  delete = async (id) => {
+  deleteFood = async (id) => {
     return await axios.delete(BASE_URL_SERVER + API_ENDPOINT.DELETE + id);
   }
 

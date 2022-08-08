@@ -177,6 +177,7 @@ const FoodList = () => {
               <button >Details</button>
             </Link>
               <button >Add to cart</button>
+              <button >Delete</button>
 
           </Typography.Link>
         )

@@ -180,13 +180,13 @@ const FoodDetail = () => {
 
     };
     console.log('dataConverted', dataConverted)
-    axios.put(`https://order-foods.herokuapp.com/api/v1/foods/${values.id}`, dataConverted)
-      .then(res => {
-        console.log(res.data);
-      }).catch(err => {
-        console.log(err);
-      })
-    navigate("/list")
+    // axios.put(`https://order-foods.herokuapp.com/api/v1/foods/${values.id}`, dataConverted)
+    //   .then(res => {
+    //     console.log(res.data);
+    //   }).catch(err => {
+    //     console.log(err);
+    //   })
+    // navigate("/list")
   };
 
   const onFinishFailed = (errorInfo) => {

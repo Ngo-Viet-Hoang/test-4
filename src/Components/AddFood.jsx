@@ -76,7 +76,6 @@ const AddFood = () => {
   const [category, setCategory] = useState("");
   const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
@@ -169,9 +168,7 @@ const AddFood = () => {
       // status: values.status,
       // price: values.price,
       // image: image,
-      "id": values.id,
       "name": values.name,
-      "slug": values.slug,
       "image": image,
       "price": values.price,
       "description": values.description,
@@ -209,39 +206,11 @@ const AddFood = () => {
       scrollToFirstError
     >
       <Form.Item
-        id="id"
-        label="Id"
-        name="id"
-        value={id.value}
-        onChange={(ev) => this._setValue(ev, 'id')}
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
         id="name"
         label="name"
         name="name"
         value={name.value}
         onChange={(ev) => this._setValue(ev, 'name')}
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        id="slug"
-        label="slug"
-        name="slug"
-        value={slug.value}
-        onChange={(ev) => this._setValue(ev, 'slug')}
         rules={[
           {
             required: true,

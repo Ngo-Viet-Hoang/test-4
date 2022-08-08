@@ -1,61 +1,56 @@
-import { Button, Modal, notification, Space  } from 'antd';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import foodService from "../Service/FoodService";
 
-const DeleteFood = () => {
-  const [visible, setVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Ban co chac chan muon xoa khong');
+export default function Deletefood({food, onDeleteFood}) {
+  const [open, setOpen] = React.useState(false);
 
-const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: 'Notification Title',
-      description:
-        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-    });
-  };
-  useEffect(() =>{
-<Space>
-    <Button onClick={() => openNotificationWithIcon('success')}>Success</Button>
-    </Space>
-  },[setModalText]) 
-  
-
-  const showModal = () => {
-    setVisible(true);
-  };
-  
-
-  const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 2000);
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-    setVisible(false);
+  const handleClose = () => {
+    setOpen(false);
+    
   };
+  const deleteFood = async () => {
+    onDeleteFood(food);
+    handleClose();
+  }
 
   return (
-    <>
-      <Button type="primary" onClick={showModal}>
-        Delete
-      </Button>
-      <Modal
-        title="Title"
-        visible={visible}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
+    <div>
+        <IconButton aria-label="delete"onClick={handleClickOpen}>
+          <DeleteIcon />
+        </IconButton>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <p>{modalText}</p>
-      </Modal>
-    </>
+        <DialogTitle id="alert-dialog-title">
+          <p>{`Delete flight airline ${food.name} ?`}</p>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          Are you sure you want to delete this airline {food.name} ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" color="error" onClick={handleClose}>Disagree</Button>
+          <Button variant="outlined"  onClick={deleteFood} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
-};
-
-export default DeleteFood;
+}
