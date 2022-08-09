@@ -173,7 +173,7 @@ const AddFood = () => {
       "price": values.price,
       "description": values.description,
       "status": values.status,
-      "mealTime": null,
+      // "mealTime": null,
       // "createdAt": "2022-08-01T10:05:34.677",
       // "category": {
       //   "id": 12

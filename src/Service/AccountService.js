@@ -12,7 +12,7 @@ const API_ENDPOINT = {
 
 
 
-class FoodService {
+class AccountService {
 
   getFoodList = async () => {
     return await axios.get(BASE_URL_SERVER + API_ENDPOINT.GET_LIST);

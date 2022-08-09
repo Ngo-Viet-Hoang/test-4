@@ -144,7 +144,6 @@ const FoodDetail = () => {
       console.log(res.data.image, 'res.data.image');
       form.setFieldsValue({ id: res.data.id });
       form.setFieldsValue({ name: res.data.name });
-      form.setFieldsValue({ slug: res.data.slug });
       form.setFieldsValue({ price: res.data.price });
       form.setFieldsValue({ description: res.data.description });
       form.setFieldsValue({ category: res.data.category.name });
@@ -167,12 +166,14 @@ const FoodDetail = () => {
   }
 
   const onFinish = async (values) => {
+    console.log("values", values);
     let dataConverted = {
 
-      "category": { id: values.category  ? values.category : categoryDetail.categoryDetail },
+      "category": values.category.find(id => {
+        return id = category
+      }),
       "id": values.id,
       "name": values.name,
-      "slug": values.slug,
       "image": image,
       "price": values.price,
       "description": values.description,
@@ -180,13 +181,13 @@ const FoodDetail = () => {
 
     };
     console.log('dataConverted', dataConverted)
-    // axios.put(`https://order-foods.herokuapp.com/api/v1/foods/${values.id}`, dataConverted)
-    //   .then(res => {
-    //     console.log(res.data);
-    //   }).catch(err => {
-    //     console.log(err);
-    //   })
-    // navigate("/list")
+    axios.put(`https://order-foods.herokuapp.com/api/v1/foods/${values.id}`, dataConverted)
+      .then(res => {
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
+    window.location.reload("/list");
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -240,17 +241,7 @@ const FoodDetail = () => {
       </Form.Item>
 
 
-      <Form.Item
-        label="slug"
-        name="slug"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+
       <Form.Item
         label="price"
         name="price"
@@ -280,10 +271,10 @@ const FoodDetail = () => {
 
         name="category"
         label="Category"
-        // value={category}
-        onChange={handleChangeCategory}
+        value={category}
+      // onChange={handleChangeCategory}
       >
-        <Select placeholder="select category">
+        <Select onChange={handleChangeCategory} placeholder="select category">
           {categoryList.Pageable?.content.map((item) => (
             <Option key={item.id} value={item.id}>{item.name}</Option>
           ))}

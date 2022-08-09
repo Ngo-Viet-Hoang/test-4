@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-    <Admin/>
+    {/* <Admin/> */}
       <BrowserRouter>
         <Routes>
           <Route path="add" element={<AddFood />} />

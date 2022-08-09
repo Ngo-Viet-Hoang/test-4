@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import foodService from '../Service/FoodService';
 import DeleteFood from './DeleteFood';
 
+
 const EditableCell = ({
   editing,
   dataIndex,
@@ -42,6 +43,10 @@ const EditableCell = ({
   );
 };
 
+const confirm = () =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(null), 3000);
+  });
 
 const FoodList = () => {
   const [foodList, setFoodList] = useState([]);
@@ -50,16 +55,16 @@ const FoodList = () => {
 
   const isEditing = (record) => record.key === editingKey;
 
-  // const edit = (record) => {
-  //   form.setFieldsValue({
-  //     id: '',
-  //     name: '',
-  //     image: '',
-  //     price: '',
-  //     ...record,
-  //   });
-  //   setEditingKey(record.key);
-  // };
+  const edit = (record) => {
+    form.setFieldsValue({
+      id: '',
+      name: '',
+      image: '',
+      price: '',
+      ...record,
+    });
+    setEditingKey(record.key);
+  };
 
   const cancel = () => {
     setEditingKey('');
@@ -84,6 +89,27 @@ const FoodList = () => {
         console.log(err);
       });
 
+  }
+  const DeleteFood = async (id) => {
+    fetch(`https://order-foods.herokuapp.com/api/v1/foods/delete/${id}`, {
+      method: "PUT",
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(res => res.json()).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    })
+    // await foodService
+    //   .deleteFood(id).then((res) => {
+    //     console.log("success", res.data);
+    //     getFoodList();
+    //   })
+    window.location.reload("/list");
   }
 
 
@@ -145,7 +171,7 @@ const FoodList = () => {
       dataIndex: 'category',
       width: '20%',
       editable: true,
-      render: (category) => (<>{category.name}</>)
+      render: (category) => (<>{category?.name}</>)
     },
     {
       title: 'status',
@@ -176,8 +202,15 @@ const FoodList = () => {
             <Link to={`/details/${id}`}>
               <button >Details</button>
             </Link>
-              <button >Add to cart</button>
-              <button >Delete</button>
+            <button >Add to cart</button>
+            <Popconfirm
+              title="Title"
+              onConfirm={confirm}
+              onClick={() => { DeleteFood(id) }}
+              onVisibleChange={() => console.log('visible change')}
+            >
+              <Button type="primary" >Delete</Button>
+            </Popconfirm>
 
           </Typography.Link>
         )
@@ -203,6 +236,7 @@ const FoodList = () => {
     };
   });
   console.log(foodList);
+
 
   return (
     <Form form={form} component={false}>
