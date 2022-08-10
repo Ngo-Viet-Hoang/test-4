@@ -169,9 +169,7 @@ const FoodDetail = () => {
     console.log("values", values);
     let dataConverted = {
 
-      "category": values.category.find(id => {
-        return id = category
-      }),
+      "category": values,
       "id": values.id,
       "name": values.name,
       "image": image,
@@ -274,7 +272,7 @@ const FoodDetail = () => {
         value={category}
       // onChange={handleChangeCategory}
       >
-        <Select onChange={handleChangeCategory} placeholder="select category">
+        <Select placeholder="select category">
           {categoryList.Pageable?.content.map((item) => (
             <Option key={item.id} value={item.id}>{item.name}</Option>
           ))}

@@ -1,10 +1,12 @@
 
+
 import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import accountService from '../../Service/AccountService';
+import categoryService from '../../Service/CategoryService';
+
 
 const EditableCell = ({
     editing,
@@ -46,8 +48,8 @@ const confirm = () =>
         setTimeout(() => resolve(null), 3000);
     });
 
-const AccountList = () => {
-    const [accountList, setAccountList] = useState([]);
+const CategoryList = () => {
+    const [categoryList, setCategoryList] = useState([]);
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
 
@@ -57,8 +59,7 @@ const AccountList = () => {
         form.setFieldsValue({
             id: '',
             name: '',
-            image: '',
-            price: '',
+            status: '',
             ...record,
         });
         setEditingKey(record.key);
@@ -69,18 +70,18 @@ const AccountList = () => {
     };
 
     useEffect(() => {
-        getAccountList();
+        getCategoryList();
     }, [])
 
     useEffect(() => {
-        console.log(accountList, 'foodList');
-    }, [accountList])
+        console.log(categoryList, 'foodList');
+    }, [categoryList])
 
-    const getAccountList = async () => {
-        await accountService
-            .getAccountList()
+    const getCategoryList = async () => {
+        await categoryService
+            .getCategoryList()
             .then((res) => {
-                setAccountList(res.data);
+                setCategoryList(res.data);
                 console.log("999999999999999", res.data)
             })
             .catch((err) => {
@@ -88,8 +89,8 @@ const AccountList = () => {
             });
 
     }
-    const DeleteAccount = async (id) => {
-        fetch(`https://order-foods.herokuapp.com/api/v1/accounts/delete/${id}`, {
+    const DeleteCategory = async (id) => {
+        fetch(`https://order-foods.herokuapp.com/api/v1/categories/delete/${id}`, {
             method: "PUT",
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache',
@@ -114,17 +115,17 @@ const AccountList = () => {
     const save = async (key) => {
         try {
             const row = await form.validateFields();
-            const newData = [...accountList];
+            const newData = [...categoryList];
             const index = newData.findIndex((item) => key === item.key);
 
             if (index > -1) {
                 const item = newData[index];
                 newData.splice(index, 1, { ...item, ...row });
-                setAccountList(newData);
+                setCategoryList(newData);
                 setEditingKey('');
             } else {
                 newData.push(row);
-                setAccountList(newData);
+                setCategoryList(newData);
                 setEditingKey('');
             }
         } catch (errInfo) {
@@ -140,28 +141,14 @@ const AccountList = () => {
             editable: true,
         },
         {
-            title: 'Username',
-            dataIndex: 'username',
-            width: '10%',
-            editable: true, 
-        },
-    
-        {
-            title: 'email',
-            dataIndex: 'email',
+            title: 'name',
+            dataIndex: 'name',
             width: '10%',
             editable: true,
         },
         {
-            title: 'phone',
-            dataIndex: 'phone',
-            width: '10%',
-            editable: true,
-        },
-        
-        {
-            title: 'Role',
-            dataIndex: 'role',
+            title: 'Category Status',
+            dataIndex: 'categoryStatus',
             width: '10%',
             editable: true,
         },
@@ -172,26 +159,16 @@ const AccountList = () => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
-                        {/* <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <button>Cancel</button>
-            </Popconfirm>
-            <Typography.Link
-              style={{
-                marginLeft: 8,
-              }}
-            >
-              <DeleteFood/>
-            </Typography.Link> */}
                     </span>
                 ) : (
                     <Typography.Link>
-                        <Link to={`/details/${id}`}>
+                        <Link to={`/category/details/${id}`}>
                             <button >Details</button>
                         </Link>
                         <Popconfirm
                             title="Title"
                             onConfirm={confirm}
-                            onClick={() => { DeleteAccount(id) }}
+                            onClick={() => { DeleteCategory(id) }}
                             onVisibleChange={() => console.log('visible change')}
                         >
                             <Button type="primary" >Delete</Button>
@@ -220,11 +197,15 @@ const AccountList = () => {
             }),
         };
     });
-    console.log(accountList);
+    console.log(categoryList);
 
 
     return (
         <Form form={form} component={false}>
+            <Link to={"/category/add"} >
+                <Button>Add New </Button>
+            </Link>
+
 
             <Table
                 components={{
@@ -233,7 +214,7 @@ const AccountList = () => {
                     },
                 }}
                 bordered
-                dataSource={accountList.Pageable?.content}
+                dataSource={categoryList.Pageable?.content}
                 columns={mergedColumns}
                 rowClassName="editable-row"
                 pagination={{
@@ -245,4 +226,4 @@ const AccountList = () => {
 };
 
 
-export default AccountList;
+export default CategoryList;

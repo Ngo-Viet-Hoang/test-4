@@ -18,7 +18,7 @@ class CategoryService {
     return await axios.get(BASE_URL_SERVER + API_ENDPOINT.GET_LIST);
   };
 
-  getAirlineDetails = async (id) => {
+  getCategoryDetails = async (id) => {
     return await axios.get(
       BASE_URL_SERVER + API_ENDPOINT.GET_DETAILS + id
     );

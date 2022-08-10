@@ -3,22 +3,22 @@ const BASE_URL_SERVER = 'https://order-foods.herokuapp.com'
 
 
 const API_ENDPOINT = {
-  GET_LIST: "/api/v1/accounts/list",
-  GET_DETAILS: "/api/v1/accounts/",
-  UPDATE_DETAILS: "/api/v1/accounts/",
+  GET_LIST: "/api/v1/orders",
+  GET_DETAILS: "/api/v1/orders/",
+//   UPDATE_DETAILS: "/api/v1/accounts/",
   CREATE_NEW: "/api/v1/accounts/create",
   DELETE: "/api/v1/accounts/delete/",
 }
 
 
 
-class AccountService {
+class OrderService {
 
-  getAccountList = async () => {
+  getOrderList = async () => {
     return await axios.get(BASE_URL_SERVER + API_ENDPOINT.GET_LIST);
   };
 
-  getDetails = async (id) => {
+  getOrderDetails = async (id) => {
     return await axios.get(
       BASE_URL_SERVER + API_ENDPOINT.GET_DETAILS + id
     );
@@ -42,6 +42,6 @@ class AccountService {
 
 }
 
-const accountService = new AccountService();
-export default accountService;
+const orderService= new OrderService();
+export default orderService;
 
