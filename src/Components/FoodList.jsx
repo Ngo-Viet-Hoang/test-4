@@ -109,7 +109,7 @@ const FoodList = () => {
     //     console.log("success", res.data);
     //     getFoodList();
     //   })
-    window.location.reload("/list");
+    // window.location.reload("/list");
   }
 
 
@@ -186,16 +186,7 @@ const FoodList = () => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            {/* <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <button>Cancel</button>
-            </Popconfirm>
-            <Typography.Link
-              style={{
-                marginLeft: 8,
-              }}
-            >
-              <DeleteFood/>
-            </Typography.Link> */}
+
           </span>
         ) : (
           <Typography.Link>
@@ -240,6 +231,12 @@ const FoodList = () => {
 
   return (
     <Form form={form} component={false}>
+      <Link to={"/add"} >
+        <div align="center" colSpan={3}>
+          <Button >Add New </Button>
+        </div>
+      </Link>
+
 
       <Table
         components={{
