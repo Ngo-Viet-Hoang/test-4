@@ -1,11 +1,11 @@
 
-import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
+import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography, message } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import foodService from '../Service/FoodService';
-import DeleteFood from './DeleteFood';
+import foodService from '../../Service/FoodService';
+import DeleteFood from '../DeleteFood';
 
 
 const EditableCell = ({
@@ -46,7 +46,13 @@ const EditableCell = ({
 const confirm = () =>
   new Promise((resolve) => {
     setTimeout(() => resolve(null), 3000);
-  });
+    window.location.reload("/list");
+
+    message.success('This is a prompt message for success, and it will disappear in 10 seconds', 1);
+  }
+  );
+
+
 
 const FoodList = () => {
   const [foodList, setFoodList] = useState([]);
@@ -109,7 +115,6 @@ const FoodList = () => {
     //     console.log("success", res.data);
     //     getFoodList();
     //   })
-    // window.location.reload("/list");
   }
 
 
@@ -190,10 +195,9 @@ const FoodList = () => {
           </span>
         ) : (
           <Typography.Link>
-            <Link to={`/details/${id}`}>
+            <Link to={`/admin/food/details/${id}`}>
               <button >Details</button>
             </Link>
-            <button >Add to cart</button>
             <Popconfirm
               title="Title"
               onConfirm={confirm}
@@ -231,9 +235,9 @@ const FoodList = () => {
 
   return (
     <Form form={form} component={false}>
-      <Link to={"/add"} >
-        <div align="center" colSpan={3}>
-          <Button >Add New </Button>
+      <Link to={"/admin/add"} >
+        <div align="right" >
+          <Button type="primary">Add New </Button>
         </div>
       </Link>
 

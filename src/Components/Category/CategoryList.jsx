@@ -46,6 +46,7 @@ const EditableCell = ({
 const confirm = () =>
     new Promise((resolve) => {
         setTimeout(() => resolve(null), 3000);
+        window.location.reload("/list");
     });
 
 const CategoryList = () => {
@@ -92,23 +93,18 @@ const CategoryList = () => {
     const DeleteCategory = async (id) => {
         fetch(`https://order-foods.herokuapp.com/api/v1/categories/delete/${id}`, {
             method: "PUT",
-            mode: 'cors', // no-cors, *cors, same-origin
+            mode: 'cors',
             cache: 'no-cache',
             headers: {
                 'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
             },
         }).then(res => res.json()).then(res => {
             console.log(res);
         }).catch(err => {
             console.log(err);
         })
-        // await foodService
-        //   .deleteFood(id).then((res) => {
-        //     console.log("success", res.data);
-        //     getFoodList();
-        //   })
-        // window.location.reload("/list");
+
+
     }
 
 
@@ -143,13 +139,13 @@ const CategoryList = () => {
         {
             title: 'name',
             dataIndex: 'name',
-            width: '10%',
+            width: '30%',
             editable: true,
         },
         {
             title: 'Category Status',
             dataIndex: 'categoryStatus',
-            width: '10%',
+            width: '30%',
             editable: true,
         },
         {

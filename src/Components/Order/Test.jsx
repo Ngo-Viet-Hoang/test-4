@@ -1,8 +1,8 @@
 import { DownOutlined } from '@ant-design/icons';
 import { Badge, Dropdown, Menu, Space, Table } from 'antd';
 import React from 'react';
-import { useState } from 'react';
 import { useEffect } from 'react';
+import { useState } from 'react';
 import orderService from '../../Service/OrderService';
 const menu = (
   <Menu
@@ -20,7 +20,7 @@ const menu = (
 );
 
 const Test = () => {
-    const [orderList, setOderList] = useState([]);
+  const [orderList, setOderList] = useState([]);
   const expandedRowRender = () => {
     const columns = [
       {
@@ -81,72 +81,68 @@ const Test = () => {
 
   const columns = [
     {
-        title: 'id',
-        dataIndex: 'id',
-        key: 'id',
+      title: 'id',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
-        title: 'Full Name',
-        dataIndex: 'fullName',
-        key: 'fullName',
+      title: 'Full Name',
+      dataIndex: 'fullName',
+      key: 'fullName',
     },
     {
-        title: 'Phone',
-        dataIndex: 'phone',
-        key: 'phone',
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone',
     },
     {
-        title: 'Note',
-        dataIndex: 'note',
-        key: 'note',
+      title: 'Note',
+      dataIndex: 'note',
+      key: 'note',
     },
     {
-        title: 'Total Price',
-        dataIndex: 'totalPrice',
-        key: 'totalPrice',
+      title: 'Total Price',
+      dataIndex: 'totalPrice',
+      key: 'totalPrice',
     },
     {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
     },
     {
-        title: 'CreateAt',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
+      title: 'CreateAt',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
     },
-
-];
-
+  ];
   const data = [];
+  console.log("orederlist", orderList)
 
-  for (let i = 0; i < 3; ++i) {
+  for (let i = 0; i < orderList.length; ++i) {
     data.push({
-      key: i.toString(),
-      name: 'Screem',
-      platform: 'iOS',
-      version: '10.3.4.5654',
-      upgradeNum: 500,
-      creator: 'Jack',
-      createdAt: '2014-12-24 23:12:00',
+      key: orderList[i].id,
+      name: orderList[i].fullName,
+      totalPrice: orderList[i].totalPrice,
+
+
     });
   }
+
   useEffect(() => {
     getOrderList();
-}, [])
+  }, [])
 
-const getOrderList = async () => {
+  const getOrderList = async () => {
     await orderService
-        .getOrderList()
-        .then((res) => {
-            setOderList(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-}
-
-
+      .getOrderList()
+      .then((res) => {
+        setOderList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <>
       <Table
@@ -157,7 +153,24 @@ const getOrderList = async () => {
         }}
         dataSource={data}
       />
-    
+      <Table
+        columns={columns}
+        expandable={{
+          expandedRowRender,
+          defaultExpandedRowKeys: ['0'],
+        }}
+        dataSource={data}
+        size="middle"
+      />
+      <Table
+        columns={columns}
+        expandable={{
+          expandedRowRender,
+          defaultExpandedRowKeys: ['0'],
+        }}
+        dataSource={data}
+        size="small"
+      />
     </>
   );
 };

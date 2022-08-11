@@ -16,13 +16,13 @@ import {
   Upload,
 } from 'antd';
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import categoryService from "../Service/CategoryService";
-import foodService from "../Service/FoodService";
+
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios, { Axios } from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import categoryService from '../../Service/CategoryService';
 const { Option } = Select;
 const normFile = (e) => {
   console.log('Upload event:', e);
@@ -187,7 +187,7 @@ const AddFood = () => {
       }).catch(err => {
         console.log(err);
       })
-    navigate("/list")
+    navigate("/admin/food/list")
   };
 
   const onFinishFailed = (errorInfo) => {

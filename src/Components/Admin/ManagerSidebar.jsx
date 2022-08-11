@@ -14,8 +14,8 @@ import { useState } from 'react';
 import { Link, NavLink, useLocation } from "react-router-dom";
 const { Sider } = Layout;
 
-const ManagerSidebar =() => {
-   
+const ManagerSidebar = () => {
+
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
 
@@ -27,33 +27,72 @@ const ManagerSidebar =() => {
             link: "/"
         },
         {
-            key: "userManagement",
-            title: "Admin",
+            key: "food",
+            title: "Food",
+            children: [
+                {
+                    key: "addFood",
+                    icon: <IdcardOutlined />,
+                    title: "Add New Food",
+                    link: "/admin/food/create"
+                },
+                {
+                    key: "foodList",
+                    icon: <FileSearchOutlined />,
+                    title: "Danh sach food",
+                    link: "/admin/food/list"
+                },
+            ]
+        },
+        {
+            key: "category",
+            title: "Category",
             children: [
                 {
                     key: "myinfo",
                     icon: <IdcardOutlined />,
-                    title: "Thông tin cá nhân",
-                    link: "/add"
+                    title: "Add New Category",
+                    link: "/admin/category/create"
                 },
                 {
                     key: "newsManager",
                     icon: <FileSearchOutlined />,
-                    title: "Quản lý tin tức",
-                    link: "./NewsManager"
+                    title: "Category List",
+                    link: "/admin/category/list"
+                },
+
+            ]
+        },
+        {
+            key: "user",
+            title: "User",
+            children: [
+                {
+                    key: "addnewAccount",
+                    icon: <IdcardOutlined />,
+                    title: "Add New Account",
+                    link: "/admin/account/create"
                 },
                 {
-                    key: "usersManager",
-                    icon: <TeamOutlined />,
-                    title: "Quản lý người dùng",
-                    link: "./UsersManager"
+                    key: "newsManager",
+                    icon: <FileSearchOutlined />,
+                    title: "Account List",
+                    link: "/admin/account/list"
                 },
+
+            ]
+        },
+        {
+            key: "order",
+            title: "Order",
+            children: [
                 {
-                    key: "form",
-                    icon: <FormOutlined />,
-                    title: "Đăng tin",
-                    link: "./CreateNewsForm"
+                    key: "order-list",
+                    icon: <IdcardOutlined />,
+                    title: "Order List",
+                    link: "/admin/order/list"
                 },
+              
             ]
         },
     ];
