@@ -16,8 +16,8 @@ import {
   Upload,
 } from 'antd';
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import categoryService from "../Service/CategoryService";
-import foodService from "../Service/FoodService";
+import categoryService from "../../Service/CategoryService";
+import foodService from "../../Service/FoodService";
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { useEffect } from 'react';
@@ -67,8 +67,8 @@ const tailFormItemLayout = {
 const FoodDetail = () => {
   const [form] = Form.useForm();
   let navigate = useNavigate();
-  const [isRedirectSuccess, setisRedirectSuccess] = useState(false);
-  const [isLoading, serisLoading] = useState(false);
+  // const [isRedirectSuccess, setisRedirectSuccess] = useState(false);
+  // const [isLoading, serisLoading] = useState(false);
   // const [content, setcontent] = useState("");
   const [categoryList, setCategoryList] = useState([]);
   const [status, setStatus] = useState("");
@@ -76,7 +76,7 @@ const FoodDetail = () => {
   const { id } = useParams()
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false)
-  const [categoryDetail, setCategoryDetail] = useState()
+  // const [categoryDetail, setCategoryDetail] = useState()
 
 
 
@@ -146,10 +146,10 @@ const FoodDetail = () => {
       form.setFieldsValue({ name: res.data.name });
       form.setFieldsValue({ price: res.data.price });
       form.setFieldsValue({ description: res.data.description });
-      form.setFieldsValue({ category: res.data.category.name });
+      form.setFieldsValue({ category: res.data.category.id });
       form.setFieldsValue({ status: res.data.status });
       form.setFieldsValue({ image: res.data.image });
-      setCategoryDetail(res.data.category.id)
+      // setCategoryDetail(res.data.category.id)
       if (res.data.image) {
         setImage(res.data.image)
       }
@@ -169,13 +169,17 @@ const FoodDetail = () => {
     console.log("values", values);
     let dataConverted = {
 
-      "category": values,
+
       "id": values.id,
       "name": values.name,
       "image": image,
       "price": values.price,
       "description": values.description,
       "status": values.status,
+      "category": {
+        // "id": values.category ? values.category : categoryDetail.category
+        "id": values.category,
+      }
 
     };
     console.log('dataConverted', dataConverted)
@@ -185,7 +189,7 @@ const FoodDetail = () => {
       }).catch(err => {
         console.log(err);
       })
-    window.location.reload("/list");
+    navigate("/admin/food/list");
   };
 
   const onFinishFailed = (errorInfo) => {
