@@ -92,7 +92,7 @@ const ManagerSidebar = () => {
                     title: "Order List",
                     link: "/admin/order/list"
                 },
-              
+
             ]
         },
     ];
@@ -101,7 +101,7 @@ const ManagerSidebar = () => {
         <>
             <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
                 <Menu theme="dark" defaultSelectedKeys={[location.pathname]} mode="inline">
-                    <Image style={{ width: "60%", marginLeft: 20 }} src='https://cdn.logo.com/hotlink-ok/logo-social.png' />
+                    <Image style={{ width: "60%", marginLeft: 20 }} src='https://www.decolore.net/wp-content/uploads/2019/09/food-logo-templates-cover.png' />
                     {items.map((item) =>
                         !item.children ? (
                             <Menu.Item key={item.key}>

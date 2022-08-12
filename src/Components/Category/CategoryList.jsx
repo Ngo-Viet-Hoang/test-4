@@ -198,7 +198,7 @@ const CategoryList = () => {
 
     return (
         <Form form={form} component={false}>
-            <Link to={"/category/add"} >
+            <Link to={"/admin/category/create"} >
                 <Button>Add New </Button>
             </Link>
 
@@ -210,7 +210,7 @@ const CategoryList = () => {
                     },
                 }}
                 bordered
-                dataSource={categoryList.Pageable?.content}
+                dataSource={categoryList}
                 columns={mergedColumns}
                 rowClassName="editable-row"
                 pagination={{

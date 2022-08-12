@@ -5,9 +5,9 @@ const BASE_URL_SERVER = 'https://order-foods.herokuapp.com'
 const API_ENDPOINT = {
   GET_LIST: "/api/v1/orders",
   GET_DETAILS: "/api/v1/orders/",
-//   UPDATE_DETAILS: "/api/v1/accounts/",
-  CREATE_NEW: "/api/v1/accounts/create",
-  DELETE: "/api/v1/accounts/delete/",
+  UPDATE_DETAILS: "/api/v1/orders/",
+  CREATE_NEW: "/api/v1/orders/create",
+  DELETE: "/api/v1/orders/delete/",
 }
 
 
