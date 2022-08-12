@@ -235,7 +235,7 @@ const FoodList = () => {
 
   return (
     <Form form={form} component={false}>
-      <Link to={"/admin/add"} >
+      <Link to={"/admin/food/create"} >
         <div align="right" >
           <Button type="primary">Add New </Button>
         </div>

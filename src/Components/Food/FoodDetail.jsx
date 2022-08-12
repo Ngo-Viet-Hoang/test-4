@@ -277,7 +277,7 @@ const FoodDetail = () => {
       // onChange={handleChangeCategory}
       >
         <Select placeholder="select category">
-          {categoryList.Pageable?.content.map((item) => (
+          {categoryList.map((item) => (
             <Option key={item.id} value={item.id}>{item.name}</Option>
           ))}
         </Select>

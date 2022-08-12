@@ -1,68 +1,49 @@
 import { DownOutlined } from '@ant-design/icons';
-import { Badge, Dropdown, Menu, Space, Table } from 'antd';
+import "antd/dist/antd.css";
+import { Badge, Button, Dropdown, Menu, Space, Table, Popconfirm } from 'antd';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import orderSercive from '../../Service/OrderService';
+import orderService from '../../Service/OrderService';
 
 
 const OrderList = () => {
     const [orderList, setOderList] = useState([]);
-    // const [orderDetail, setOrderDetail] = useState([]);
 
 
-
-
-    const expandedRowRender = (list) => {
-
-        console.log("list", list);
-        const columns = [
-
-            {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
-            },
-            {
-                title: 'Image',
-                dataIndex: 'image',
-                key: 'image',
-
-
-            },
-            {
-                title: 'Quantity',
-                dataIndex: 'quantity',
-                key: 'quantity',
-
-            },
-            {
-                title: 'UnitPrice',
-                dataIndex: 'unitPrice',
-                key: 'unitPrice',
-
-            },
-
-
-        ];
-        const data = [];
-
-        for (let i = 0; i < list.orderDetails.length; ++i) {
-
-            console.log("ist.orderDetails", list.orderDetails[i]);
-            data.push({
-                key: list.orderDetails[i].orderDetailId.id,
-                name: list.orderDetails[i].food.name,
-                image: <img src={list.orderDetails[i].food.image} style={{ width: '300px' }} />,
-                quantity: list.orderDetails[i].quantity,
-                unitPrice: list.orderDetails[i].unitPrice,
-
-            });
-
+    const confirm = () =>
+        new Promise((resolve) => {
+            setTimeout(() => resolve(null), 3000);
+            window.location.reload("/list");
         }
+        );
 
-        return <Table columns={columns} dataSource={data} pagination={false} />;
-    };
+
+
+    const columns1 = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+
+
+        },
+        {
+            title: "quantity",
+            dataIndex: "quantity",
+            key: "quantity"
+        },
+        {
+            title: "unitPrice",
+            dataIndex: "unitPrice",
+            key: "unitPrice"
+        },
+    ];
 
     const columns = [
         {
@@ -86,31 +67,77 @@ const OrderList = () => {
             key: 'note',
         },
         {
-            title: 'Total Price',
-            dataIndex: 'totalPrice',
-            key: 'totalPrice',
+            title: "totalPrice",
+            dataIndex: "totalPrice",
+            key: "totalPrice"
         },
         {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
+            title: "Status",
+            dataIndex: "orderStatus",
+            key: "orderStatus"
         },
         {
-            title: 'CreateAt',
-            dataIndex: 'createdAt',
-            key: 'createdAt',
+            title: "createdAt",
+            dataIndex: "createdAt",
+            key: "createdAt"
         },
-
+        {
+            title: "Action",
+            key: "operation",
+            render: (id) => <Popconfirm
+                title="Title"
+                onConfirm={confirm}
+                onClick={() => { UpdateOrder(id) }}
+                onVisibleChange={() => console.log('visible change')}
+            >
+                <Button type="primary" >Update</Button>
+            </Popconfirm>
+        }
     ];
 
+    const data = []
+    for (let i = 0; i < orderList.length; ++i) {
+        data.push({
+            id: orderList[i].id,
+            fullName: orderList[i].fullName,
+            phone: orderList[i].phone,
+            note: orderList[i].note,
+            totalPrice: orderList[i].totalPrice,
+            orderStatus: orderList[i].orderStatus,
+            createdAt: orderList[i].createdAt,
+            orderDetails: orderList[i].orderDetails,
+        });
+
+    }
 
 
+    data.map(item => {
+        item.key = item.id;
+        item.orderDetails.map(item2 => {
+            item2["name"] = item2.food.name;
+            item2["image"] = <img src={item2.food.image} style={{ width: '300px' }} />;
+        })
+    })
     useEffect(() => {
         getOrderList();
     }, [])
+    const UpdateOrder = async (id) => {
+        fetch(`https://order-foods.herokuapp.com/api/v1/orders/${id.id}`, {
+            method: "PUT",
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(res => res.json()).then(res => {
+            console.log("hellllllllllll", res);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     const getOrderList = async () => {
-        await orderSercive
+        await orderService
             .getOrderList()
             .then((res) => {
                 setOderList(res.data);
@@ -120,175 +147,21 @@ const OrderList = () => {
             });
     }
 
-
-
     return (
         <>
             <Table
                 columns={columns}
                 expandable={{
-                    expandedRowRender,
-                    defaultExpandedRowKeys: ['0'],
+                    expandedRowRender: record => (
+                        <Table columns={columns1} dataSource={record.orderDetails} pagination={false} />
+                    ),
+                    defaultExpandedRowKeys: ["0"]
                 }}
-                dataSource={orderList.content}
+                dataSource={data}
             />
         </>
     );
 };
 
 export default OrderList;
-// import { DownOutlined } from '@ant-design/icons';
-// import { Badge, Dropdown, Menu, Space, Table } from 'antd';
-// import React from 'react';
-// import { useEffect } from 'react';
-// import { useState } from 'react';
-// import orderSercive from '../../Service/OrderService';
 
-
-// const OrderList = () => {
-//     const [orderList, setOderList] = useState([]);
-//     // const [orderDetail, setOrderDetail] = useState([]);
-
-
-
-
-//     const expandedRowRender = (list) => {
-
-//         console.log("list", list);
-//         const columns = [
-
-//             {
-//                 title: 'Name',
-//                 dataIndex: 'name',
-//                 key: 'name',
-//             },
-//             {
-//                 title: 'Image',
-//                 dataIndex: 'image',
-//                 key: 'image',
-
-
-//             },
-//             {
-//                 title: 'Quantity',
-//                 dataIndex: 'quantity',
-//                 key: 'quantity',
-
-//             },
-//             {
-//                 title: 'UnitPrice',
-//                 dataIndex: 'unitPrice',
-//                 key: 'unitPrice',
-
-//             },
-
-
-//         ];
-//         const data = [];
-
-
-//         for (let i = 0; i < 3; ++i) {
-
-//             data.push({
-//                 // key: list[i].id,
-//                 //name: list[i].orderDetails[j].food.name,
-//                 // image: <img src={list.orderDetails[i].food.image} style={{ width: '300px' }} />,
-//                 // quantity: list.orderDetails[i].quantity,
-//                 // unitPrice: list.orderDetails[i].unitPrice,
-
-//             });
-
-
-//         }
-
-//         return <Table columns={columns} dataSource={data} pagination={false} />;
-//     };
-//     const data = [];
-//     for (let i = 0; i < orderList.length; ++i) {
-//         data.push({
-//             key: i.toString(),
-//             id: orderList[i].id,
-//             name: orderList[i].fullName,
-//             phone: orderList[i].phone,
-//             note: orderList[i].note,
-//             totalPrice: orderList[i].totalPrice,
-//             status: orderList[i].status,
-//             createdAt: orderList[i].createdAt,
-
-
-//         });
-//     }
-
-//     const columns = [
-//         {
-//             title: 'id',
-//             dataIndex: 'id',
-//             key: 'id',
-//         },
-//         {
-//             title: 'Full Name',
-//             dataIndex: 'fullName',
-//             key: 'fullName',
-//         },
-//         {
-//             title: 'Phone',
-//             dataIndex: 'phone',
-//             key: 'phone',
-//         },
-//         {
-//             title: 'Note',
-//             dataIndex: 'note',
-//             key: 'note',
-//         },
-//         {
-//             title: 'Total Price',
-//             dataIndex: 'totalPrice',
-//             key: 'totalPrice',
-//         },
-//         {
-//             title: 'Status',
-//             dataIndex: 'status',
-//             key: 'status',
-//         },
-//         {
-//             title: 'CreateAt',
-//             dataIndex: 'createdAt',
-//             key: 'createdAt',
-//         },
-
-//     ];
-
-
-
-//     useEffect(() => {
-//         getOrderList();
-//     }, [])
-
-//     const getOrderList = async () => {
-//         await orderSercive
-//             .getOrderList()
-//             .then((res) => {
-//                 setOderList(res.data);
-//             })
-//             .catch((err) => {
-//                 console.log(err);
-//             });
-//     }
-
-
-
-//     return (
-//         <>
-//             <Table
-//                 columns={columns}
-//                 expandable={{
-//                     expandedRowRender,
-//                     defaultExpandedRowKeys: ['0'],
-//                 }}
-//                 dataSource={data}
-//             />
-//         </>
-//     );
-// };
-
-// export default OrderList;

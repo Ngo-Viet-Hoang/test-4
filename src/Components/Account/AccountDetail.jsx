@@ -1,225 +1,276 @@
 import {
-    AutoComplete,
-    Button,
-    Cascader,
-    Checkbox,
-    Col,
-    Form,
-    Input,
-    InputNumber,
-    Row,
-    Select,
-    Radio,
-    Rate,
-    Slider,
-    Switch,
-    Upload,
-  } from 'antd';
-  import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-  import accountService from '../../Service/AccountService';
-  import React, { useState } from 'react';
-  import 'antd/dist/antd.css';
-  import { useEffect } from 'react';
-  import axios, { Axios } from 'axios';
-  import { Link, useNavigate } from 'react-router-dom';
-  const { Option } = Select;
-  const normFile = (e) => {
-    console.log('Upload event:', e);
-  
-    if (Array.isArray(e)) {
-      return e;
-    }
-  
-    return e?.fileList;
-  };
-  const formItemLayout = {
-    labelCol: {
-      xs: {
-        span: 16,
-      },
-      sm: {
-        span: 8,
-      },
+  AutoComplete,
+  Button,
+  Cascader,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  Radio,
+  Rate,
+  Slider,
+  Switch,
+  Upload,
+} from 'antd';
+import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
+import accountService from '../../Service/AccountService';
+import React, { useState } from 'react';
+import 'antd/dist/antd.css';
+import { useEffect } from 'react';
+import axios, { Axios } from 'axios';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+const { Option } = Select;
+const normFile = (e) => {
+  console.log('Upload event:', e);
+
+  if (Array.isArray(e)) {
+    return e;
+  }
+
+  return e?.fileList;
+};
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 16,
     },
-    wrapperCol: {
-      xs: {
-        span: 16,
-      },
-      sm: {
-        span: 8,
-      },
+    sm: {
+      span: 8,
     },
-  };
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 8,
-      },
+  },
+  wrapperCol: {
+    xs: {
+      span: 16,
     },
+    sm: {
+      span: 8,
+    },
+  },
+};
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 8,
+    },
+  },
+};
+
+
+const AccountDetail = () => {
+  const [form] = Form.useForm();
+  let navigate = useNavigate();
+  const { id } = useParams()
+
+  const [accountStatus] = useState([
+    {
+      key: 1,
+      type: "ADMIN"
+    },
+    {
+      key: 2,
+      type: "USER"
+    },
+  ]);
+
+
+
+  useEffect(() => {
+    getDetails();
+
+  }, [])
+
+
+
+  const getDetails = async () => {
+    await accountService.getDetails(id).then((res) => {
+      form.setFieldsValue({ id: res.data.id });
+      form.setFieldsValue({ username: res.data.username });
+      form.setFieldsValue({ email: res.data.email });
+      form.setFieldsValue({ phone: res.data.phone });
+      form.setFieldsValue({ role: res.data.role });
+    });
   };
-  
-  
-  const AccountDetail = () => {
-    const [form] = Form.useForm();
-    let navigate = useNavigate();
-  
-  
-    const onFinish = async (values) => {
-      let dataConverted = {
-  
-        category: { id: values.category },
-  
-        "username": values.username,
-        "email": values.email,
-        "password": values.password,
-        "phone": values.phone,
-      };
-      console.log(dataConverted)
-  
-      axios.post(`https://order-foods.herokuapp.com/api/v1/accounts/register`, dataConverted)
-        .then(res => {
-          console.log(res.data);
-        }).catch(err => {
-          console.log(err);
-        })
-      navigate("/accounts/list")
+
+  const onFinish = async (values) => {
+    let dataConverted = {
+      "id": values.id,
+      "username": values.username,
+      "email": values.email,
+      "password": values.password,
+      "confirmPassword": values.confirmPassword,
+      "phone": values.phone,
     };
-  
-    const onFinishFailed = (errorInfo) => {
-      console.log('Failed:', errorInfo);
-    };
-  
-    const prefixSelector = (
-      <Form.Item name="prefix" noStyle>
-        <Select
-          style={{
-            width: 70,
-          }}
-        >
-          <Option value="84">+84</Option>
-          <Option value="87">+87</Option>
+    console.log(dataConverted)
+
+    axios.put(`https://order-foods.herokuapp.com/api/v1/accounts/${values.id}`, dataConverted)
+      .then(res => {
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
+    navigate("/admin/account/list")
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select
+        style={{
+          width: 70,
+        }}
+      >
+        <Option value="84">+84</Option>
+        <Option value="87">+87</Option>
+      </Select>
+    </Form.Item>
+  );
+
+  return (
+
+    <Form
+      {...formItemLayout}
+      form={form}
+      name="register"
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      scrollToFirstError
+    >
+      <Form.Item
+        label="Id"
+        name="id"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        id="username"
+        label="username"
+        name="username"
+        rules={[
+          {
+            required: true,
+            message: "Please enter your Username",
+          },
+        ]}
+        hasFeedback
+      >
+        <Input placeholder="Type your name" />
+      </Form.Item>
+
+      <Form.Item
+        id="email"
+        name="email"
+        label="Email"
+        rules={[
+          {
+            required: true,
+            message: "Please enter your Email",
+          },
+          { type: "email", message: "Please enter a valid email" },
+        ]}
+      >
+        <Input
+          placeholder="Type your email"
+        />
+      </Form.Item>
+      <Form.Item
+        id="phone"
+        name="phone"
+        label="Phone Number"
+        type="tel"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your phone number!',
+
+          },
+        ]}
+      >
+        <Input
+          addonBefore={prefixSelector}
+        />
+      </Form.Item>
+      <Form.Item
+        id="password"
+        name="password"
+        label="New Password"
+
+        // rules={[
+        //   {
+        //     required: true,
+        //   },
+        //   {
+        //     validator: (_, value) =>
+        //       value && value.includes("A")
+        //         ? Promise.resolve()
+        //         : Promise.reject("Password does not match criteria."),
+        //   },
+        // ]}
+        hasFeedback
+      >
+        <Input.Password placeholder="Type your password" />
+      </Form.Item>
+
+      <Form.Item
+        id="confirmPassword"
+        name="confirmPassword"
+        label="New ConfirmPassword"
+        dependencies={["password"]}
+        // rules={[
+        //   {
+        //     required: true,
+        //   },
+        //   ({ getFieldValue }) => ({
+        //     validator(_, value) {
+        //       if (!value || getFieldValue("password") === value) {
+        //         return Promise.resolve();
+        //       }
+        //       return Promise.reject(
+        //         "The two passwords that you entered does not match."
+        //       );
+        //     },
+        //   }),
+        // ]}
+        hasFeedback
+      >
+        <Input.Password placeholder="Confirm your password" />
+      </Form.Item>
+      <Form.Item
+        name="role"
+        label="Role"
+      // value={role}
+      // onChange={handleChangeRole}
+      >
+        <Select placeholder="select role">
+          {accountStatus.map((item, index) => (
+            <Option key={index} value={item.id}>{item.type}</Option>
+          ))}
         </Select>
       </Form.Item>
-    );
-  
-    return (
-  
-      <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        scrollToFirstError
-      >
-        <Form.Item
-          id="username"
-          label="username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your Username",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input placeholder="Type your name" />
-        </Form.Item>
-  
-        <Form.Item
-          id="email"
-          name="email"
-          label="Email"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your Email",
-            },
-            { type: "email", message: "Please enter a valid email" },
-          ]}
-        >
-          <Input
-            placeholder="Type your email"
-          />
-        </Form.Item>
-        <Form.Item
-          id="phone"
-          name="phone"
-          label="Phone Number"
-          type="tel"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your phone number!',
-  
-            },
-          ]}
-        >
-          <Input
-            addonBefore={prefixSelector}
-          />
-        </Form.Item>
-        <Form.Item
-          id="password"
-          name="password"
-          label="Password"
-  
-          rules={[
-            {
-              required: true,
-            },
-            {
-              validator: (_, value) =>
-                value && value.includes("A")
-                  ? Promise.resolve()
-                  : Promise.reject("Password does not match criteria."),
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password placeholder="Type your password" />
-        </Form.Item>
-  
-        <Form.Item
-          id="confirmPassword"
-          name="confirmPassword"
-          label="ConfirmPassword"
-          dependencies={["password"]}
-          rules={[
-            {
-              required: true,
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  "The two passwords that you entered does not match."
-                );
-              },
-            }),
-          ]}
-          hasFeedback
-        >
-          <Input.Password placeholder="Confirm your password" />
-        </Form.Item>
-  
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
-            Add
-          </Button>
-        </Form.Item>
-      </Form>
-    );
-  };
-  
-  
-  export default AccountDetail;
-  
+
+      <Form.Item {...tailFormItemLayout}>
+        <Button type="primary" htmlType="submit">
+          Add
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
+
+
+export default AccountDetail;

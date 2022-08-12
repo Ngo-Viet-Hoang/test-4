@@ -136,67 +136,51 @@ const AccountList = () => {
         {
             title: 'id',
             dataIndex: 'id',
-            width: '2%',
+            width: '5%',
             editable: true,
         },
         {
             title: 'Username',
             dataIndex: 'username',
-            width: '10%',
-            editable: true, 
+            width: '20%',
+            editable: true,
         },
-    
+
         {
-            title: 'email',
+            title: 'Email',
             dataIndex: 'email',
-            width: '10%',
+            width: '30%',
             editable: true,
         },
         {
-            title: 'phone',
+            title: 'Phone',
             dataIndex: 'phone',
-            width: '10%',
+            width: '20%',
             editable: true,
         },
-        
+
         {
             title: 'Role',
             dataIndex: 'role',
             width: '10%',
             editable: true,
+            
         },
         {
-            title: 'operation',
+            title: 'Operation',
             dataIndex: 'id',
             render: (id, record) => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
-                        {/* <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <button>Cancel</button>
-            </Popconfirm>
-            <Typography.Link
-              style={{
-                marginLeft: 8,
-              }}
-            >
-              <DeleteFood/>
-            </Typography.Link> */}
+                        
                     </span>
                 ) : (
                     <Typography.Link>
-                        <Link to={`/details/${id}`}>
+                        <Link to={`/admin/account/details/${id}`}>
                             <button >Details</button>
                         </Link>
-                        <Popconfirm
-                            title="Title"
-                            onConfirm={confirm}
-                            onClick={() => { DeleteAccount(id) }}
-                            onVisibleChange={() => console.log('visible change')}
-                        >
-                            <Button type="primary" >Delete</Button>
-                        </Popconfirm>
-
+                        
                     </Typography.Link>
                 )
 
@@ -233,7 +217,7 @@ const AccountList = () => {
                     },
                 }}
                 bordered
-                dataSource={accountList.Pageable?.content}
+                dataSource={accountList}
                 columns={mergedColumns}
                 rowClassName="editable-row"
                 pagination={{
