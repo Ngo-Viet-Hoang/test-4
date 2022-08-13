@@ -192,7 +192,7 @@ const AccountDetail = () => {
         id="phone"
         name="phone"
         label="Phone Number"
-        type="tel"
+        // type="tel"
         rules={[
           {
             required: true,
@@ -231,21 +231,21 @@ const AccountDetail = () => {
         name="confirmPassword"
         label="New ConfirmPassword"
         dependencies={["password"]}
-        // rules={[
-        //   {
-        //     required: true,
-        //   },
-        //   ({ getFieldValue }) => ({
-        //     validator(_, value) {
-        //       if (!value || getFieldValue("password") === value) {
-        //         return Promise.resolve();
-        //       }
-        //       return Promise.reject(
-        //         "The two passwords that you entered does not match."
-        //       );
-        //     },
-        //   }),
-        // ]}
+        rules={[
+          // {
+          //   required: true,
+          // },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue("password") === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(
+                "The two passwords that you entered does not match."
+              );
+            },
+          }),
+        ]}
         hasFeedback
       >
         <Input.Password placeholder="Confirm your password" />

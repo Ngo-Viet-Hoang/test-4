@@ -39,13 +39,6 @@ class CategoryService {
     return await axios.delete(BASE_URL_SERVER + API_ENDPOINT.DELETE + id);
   }
 
-  uploadLogo = async (data) => {
-    return await axios.post(BASE_URL_SERVER + API_ENDPOINT.UPLOAD_LOGO, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  }
 }
 
 const categoryService = new CategoryService();

@@ -158,7 +158,7 @@ const CategoryList = () => {
                     </span>
                 ) : (
                     <Typography.Link>
-                        <Link to={`/category/details/${id}`}>
+                        <Link to={`/admin/category/details/${id}`}>
                             <button >Details</button>
                         </Link>
                         <Popconfirm

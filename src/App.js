@@ -10,6 +10,7 @@ import AddCategory from "./Components/Category/AddCategory";
 import CategoryList from "./Components/Category/CategoryList";
 import AddFood from "./Components/Food/AddFood.jsx";
 import AccountDetail from "./Components/Account/AccountDetail.jsx";
+import CategoryDetail from "./Components/Category/CategoryDetail.jsx";
 ;
 
 
@@ -27,12 +28,11 @@ function App() {
                         <Route path="/admin/food/details/:id" element={<FoodDetail />} />
                         <Route path="/admin/category/create" element={<AddCategory />} />
                         <Route path="/admin/category/list" element={<CategoryList />} />
+                        <Route path="/admin/category/details/:id" element={<CategoryDetail />} />
                         <Route path="/admin/account/create" element={<AddAccount />} />
                         <Route path="/admin/account/list" element={<AccountList />} />
                         <Route path="/admin/account/details/:id" element={<AccountDetail />} />
                         <Route path="/admin/order/list" element={<OrderList />} />
-
-
 
                     </Route>
 
