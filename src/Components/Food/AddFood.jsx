@@ -250,7 +250,7 @@ const AddFood = () => {
         rules={[
           {
             required: true,
-            message: 'Please input Intro',
+            message: 'Please input description',
           },
         ]}
       >
@@ -263,6 +263,12 @@ const AddFood = () => {
         label="Category"
         value={category}
         onChange={handleChangeCategory}
+        rules={[
+          {
+            required: true,
+            message: 'Please select category',
+          },
+        ]}
       >
         <Select placeholder="select category">
           {categoryList.map((item) => (
@@ -277,6 +283,12 @@ const AddFood = () => {
         label="Status"
         value={status}
         onChange={handleChangeStatus}
+        rules={[
+          {
+            required: true,
+            message: 'Please select status',
+          },
+        ]}
       >
         <Select placeholder="select status">
           {foodStatus.map((item, index) => (
@@ -289,6 +301,7 @@ const AddFood = () => {
         name="image"
         label="image"
         value={image}
+
       >
 
         <div>

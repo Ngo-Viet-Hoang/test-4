@@ -219,17 +219,6 @@ const FoodDetail = () => {
         <Input />
       </Form.Item>
 
-      {/* <Form.Item
-        label="Name"
-        name= "name"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item> */}
       <Form.Item
         label="Name"
         name="name"

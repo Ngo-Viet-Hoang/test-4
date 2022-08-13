@@ -63,10 +63,11 @@ const tailFormItemLayout = {
   },
 };
 
-
+const REGEX_TEL = "^0\\d{9,11}$";
 const AddAccount = () => {
   const [form] = Form.useForm();
   let navigate = useNavigate();
+
 
 
   const onFinish = async (values) => {
@@ -152,7 +153,7 @@ const AddAccount = () => {
         id="phone"
         name="phone"
         label="Phone Number"
-        type="tel"
+        pattern={REGEX_TEL}
         rules={[
           {
             required: true,
