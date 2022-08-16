@@ -204,7 +204,9 @@ const AddFood = () => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       scrollToFirstError
+      
     >
+      <h1><b>Add New Food</b></h1>
       <Form.Item
         id="name"
         label="name"

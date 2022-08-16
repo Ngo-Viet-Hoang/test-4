@@ -9,16 +9,16 @@ import orderService from '../../Service/OrderService';
 
 const OrderList = () => {
     const [orderList, setOderList] = useState([]);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-
-    const confirm = () =>
-        new Promise((resolve) => {
+    const confirm = (id) =>
+        new Promise((resolve) => { 
+            setLoading(true)
             setTimeout(() => resolve(null), 3000);
-            window.location.reload("/list");
+            UpdateOrder(id);
         }
         );
-
-
 
     const columns1 = [
         {
@@ -77,6 +77,11 @@ const OrderList = () => {
             key: "orderStatus"
         },
         {
+            title: "Meal Time",
+            dataIndex: "mealTime",
+            key: "mealTime"
+        },
+        {
             title: "createdAt",
             dataIndex: "createdAt",
             key: "createdAt"
@@ -84,19 +89,23 @@ const OrderList = () => {
         {
             title: "Action",
             key: "operation",
-            render: (id) => <Popconfirm
+            render: (id) => 
+            <Popconfirm
                 title="Title"
-                onConfirm={confirm}
-                onClick={() => { UpdateOrder(id) }}
-                onVisibleChange={() => console.log('visible change')}
+                onConfirm={()=>confirm(id)}
+                // onVisibleChange={() => {
+                //     getData();
+                //     console.log('visible change')}}
             >
                 <Button type="primary" >Update</Button>
             </Popconfirm>
         }
     ];
 
-    const data = []
-    for (let i = 0; i < orderList.length; ++i) {
+    const getData = () =>{
+        setLoading(false)
+        const data = []
+        for (let i = 0; i < orderList.length; ++i) {
         data.push({
             id: orderList[i].id,
             fullName: orderList[i].fullName,
@@ -104,12 +113,11 @@ const OrderList = () => {
             note: orderList[i].note,
             totalPrice: orderList[i].totalPrice,
             orderStatus: orderList[i].orderStatus,
+            mealTime: orderList[i].mealTime,
             createdAt: orderList[i].createdAt,
             orderDetails: orderList[i].orderDetails,
         });
-
     }
-
 
     data.map(item => {
         item.key = item.id;
@@ -118,9 +126,17 @@ const OrderList = () => {
             item2["image"] = <img src={item2.food.image} style={{ width: '300px' }} />;
         })
     })
+    setData(data);
+    }
+
+    useEffect(()=>{
+        getData();
+    },[orderList])
+
     useEffect(() => {
         getOrderList();
     }, [])
+
     const UpdateOrder = async (id) => {
         fetch(`https://order-foods.herokuapp.com/api/v1/orders/${id.id}`, {
             method: "PUT",
@@ -129,9 +145,13 @@ const OrderList = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-        }).then(res => res.json()).then(res => {
+        })
+        .then(res => res.json())
+        .then(res => {
             console.log("hellllllllllll", res);
-        }).catch(err => {
+            getOrderList();
+        })
+        .catch(err => {
             console.log(err);
         })
     }
@@ -140,6 +160,7 @@ const OrderList = () => {
         await orderService
             .getOrderList()
             .then((res) => {
+                console.log('get order list');
                 setOderList(res.data);
             })
             .catch((err) => {
@@ -150,10 +171,15 @@ const OrderList = () => {
     return (
         <>
             <Table
+                loading={loading}
                 columns={columns}
                 expandable={{
                     expandedRowRender: record => (
-                        <Table columns={columns1} dataSource={record.orderDetails} pagination={false} />
+                        <Table 
+                            columns={columns1} 
+                            dataSource={record.orderDetails} 
+                            pagination={false} 
+                        />
                     ),
                     defaultExpandedRowKeys: ["0"]
                 }}

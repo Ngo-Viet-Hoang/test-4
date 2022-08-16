@@ -134,6 +134,7 @@ const AddCategory = () => {
       onFinishFailed={onFinishFailed}
       scrollToFirstError
     >
+      
       <Form.Item
         id="name"
         label="name"

@@ -88,25 +88,25 @@ const AddAccount = () => {
       }).catch(err => {
         console.log(err);
       })
-    navigate("/admin/account/list")
+    // navigate("/admin/account/list")
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="84">+84</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
+  // const prefixSelector = (
+  //   <Form.Item name="prefix" noStyle>
+  //     <Select
+  //       style={{
+  //         width: 70,
+  //       }}
+  //     >
+  //       <Option value="84">+84</Option>
+  //       <Option value="87">+87</Option>
+  //     </Select>
+  //   </Form.Item>
+  // );
 
   return (
 
@@ -163,7 +163,8 @@ const AddAccount = () => {
         ]}
       >
         <Input
-          addonBefore={prefixSelector}
+          placeholder="Type your phone"
+          // addonBefore={prefixSelector}
         />
       </Form.Item>
       <Form.Item
