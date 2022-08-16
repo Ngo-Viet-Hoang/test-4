@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import categoryService from '../../Service/CategoryService';
-
+import { PlusCircleFilled } from '@ant-design/icons';
 
 const EditableCell = ({
     editing,
@@ -199,7 +199,9 @@ const CategoryList = () => {
     return (
         <Form form={form} component={false}>
             <Link to={"/admin/category/create"} >
-                <Button>Add New </Button>
+            <div align="right" style={{padding :25}} >
+          <Button type="primary"><PlusCircleFilled /> Add New</Button>
+        </div>
             </Link>
 
 

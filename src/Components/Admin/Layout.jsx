@@ -4,6 +4,8 @@ import 'antd/dist/antd.css';
 import "../../index.css"
 import { Outlet } from 'react-router-dom';
 import ManagerSidebar from './ManagerSidebar';
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar } from 'antd';
 
 
 
@@ -21,13 +23,9 @@ const Manager = () => {
                             onBack={() => window.history.back()}
                             title="Order Food"
                             subTitle="This is a subtitle"
-                        // extra={[
-                        //     <Button key="3">Operation</Button>,
-                        //     <Button key="2">Operation</Button>,
-                        //     <Button key="1" type="primary">
-                        //         Primary
-                        //     </Button>,
-                        // ]}
+                        extra={[
+                              <Avatar size="large" icon={<UserOutlined />} />
+                        ]}
                         >
                             <Descriptions size="small" column={3}>
                                 <Descriptions.Item label="Created">Lili Qu</Descriptions.Item>

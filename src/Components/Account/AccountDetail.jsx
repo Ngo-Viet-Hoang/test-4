@@ -107,6 +107,7 @@ const AccountDetail = () => {
       "password": values.password,
       "confirmPassword": values.confirmPassword,
       "phone": values.phone,
+      'role': values.role
     };
     console.log(dataConverted)
 
@@ -123,18 +124,7 @@ const AccountDetail = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="84">+84</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
+
 
   return (
 
@@ -202,7 +192,7 @@ const AccountDetail = () => {
         ]}
       >
         <Input
-          addonBefore={prefixSelector}
+          placeholder="Type your number"
         />
       </Form.Item>
       <Form.Item
@@ -253,8 +243,6 @@ const AccountDetail = () => {
       <Form.Item
         name="role"
         label="Role"
-      // value={role}
-      // onChange={handleChangeRole}
       >
         <Select placeholder="select role">
           {accountStatus.map((item, index) => (
@@ -265,8 +253,9 @@ const AccountDetail = () => {
 
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
-          Add
+          Update
         </Button>
+        
       </Form.Item>
     </Form>
   );

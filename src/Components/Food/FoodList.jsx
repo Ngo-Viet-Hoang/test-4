@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import foodService from '../../Service/FoodService';
 import DeleteFood from '../DeleteFood';
+import { PlusCircleFilled } from '@ant-design/icons';
 
 
 const EditableCell = ({
@@ -236,8 +237,8 @@ const FoodList = () => {
   return (
     <Form form={form} component={false}>
       <Link to={"/admin/food/create"} >
-        <div align="right" >
-          <Button type="primary">Add New </Button>
+        <div align="right" style={{padding :25}} >
+          <Button type="primary"><PlusCircleFilled /> Add New</Button>
         </div>
       </Link>
 
