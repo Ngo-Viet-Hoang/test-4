@@ -1,6 +1,6 @@
 import { DownOutlined } from '@ant-design/icons';
 import "antd/dist/antd.css";
-import { Badge, Button, Dropdown, Menu, Space, Table, Popconfirm } from 'antd';
+import { Badge, Button, Dropdown, Menu, Space, Table, Popconfirm, message  } from 'antd';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -12,11 +12,19 @@ const OrderList = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const Success = () => {
+        message
+          .loading('Action in progress..', 2)
+          .then(() => message.success('Update Success', 2))
+      };
+      
+
     const confirm = (id) =>
         new Promise((resolve) => { 
             setLoading(true)
-            setTimeout(() => resolve(null), 3000);
+            setTimeout(() => resolve(null), 5000);
             UpdateOrder(id);
+            Success(id);
         }
         );
 

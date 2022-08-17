@@ -1,12 +1,13 @@
 
-import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography, message } from 'antd';
+import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography, message, Space } from 'antd';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import foodService from '../../Service/FoodService';
 import DeleteFood from '../DeleteFood';
-import { PlusCircleFilled } from '@ant-design/icons';
+import { PlusCircleFilled, SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
 
 
 const EditableCell = ({
@@ -56,9 +57,120 @@ const confirm = () =>
 
 
 const FoodList = () => {
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
+
+
   const [foodList, setFoodList] = useState([]);
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState('');
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters,selectedKeys, confirm, dataIndex) => {
+    clearFilters();
+    setSearchText('');
+    confirm({
+      closeDropdown: false,
+    });
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+    
+  };
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters,selectedKeys, confirm, dataIndex)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1890ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+
+
+
+
+
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -100,22 +212,16 @@ const FoodList = () => {
   const DeleteFood = async (id) => {
     fetch(`https://order-foods.herokuapp.com/api/v1/foods/delete/${id}`, {
       method: "PUT",
-      mode: 'cors', // no-cors, *cors, same-origin
+      mode: 'cors',
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
     }).then(res => res.json()).then(res => {
       console.log(res);
     }).catch(err => {
       console.log(err);
     })
-    // await foodService
-    //   .deleteFood(id).then((res) => {
-    //     console.log("success", res.data);
-    //     getFoodList();
-    //   })
   }
 
 
@@ -152,6 +258,7 @@ const FoodList = () => {
       dataIndex: 'name',
       width: '10%',
       editable: true,
+      ...getColumnSearchProps('name'),
     },
     {
       title: 'image',
@@ -165,12 +272,14 @@ const FoodList = () => {
       dataIndex: 'description',
       width: '10%',
       editable: true,
+
     },
     {
       title: 'price',
       dataIndex: 'price',
       width: '10%',
       editable: true,
+      ...getColumnSearchProps('price'),
     },
     {
       title: 'category',
@@ -184,6 +293,7 @@ const FoodList = () => {
       dataIndex: 'status',
       width: '10%',
       editable: true,
+      ...getColumnSearchProps('status'),
     },
     {
       title: 'operation',

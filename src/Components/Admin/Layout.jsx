@@ -27,7 +27,7 @@ const Manager = () => {
                               <Avatar size="large" icon={<UserOutlined />} />
                         ]}
                         >
-                            <Descriptions size="small" column={3}>
+                            {/* <Descriptions size="small" column={3}>
                                 <Descriptions.Item label="Created">Lili Qu</Descriptions.Item>
                                 <Descriptions.Item label="Association">
                                     <a>421421</a>
@@ -37,7 +37,7 @@ const Manager = () => {
                                 <Descriptions.Item label="Remarks">
                                     Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
                                 </Descriptions.Item>
-                            </Descriptions>
+                            </Descriptions> */}
                         </PageHeader>
                     </div>
                     <Content style={{ margin: '0 16px' }}>
