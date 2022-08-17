@@ -69,7 +69,7 @@ const AccountDetail = () => {
   let navigate = useNavigate();
   const { id } = useParams()
 
-  const [accountStatus] = useState([
+  const [roleStatus] = useState([
     {
       key: 1,
       type: "ADMIN"
@@ -139,11 +139,6 @@ const AccountDetail = () => {
       <Form.Item
         label="Id"
         name="id"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
       >
         <Input />
       </Form.Item>
@@ -173,6 +168,7 @@ const AccountDetail = () => {
           },
           { type: "email", message: "Please enter a valid email" },
         ]}
+        hasFeedback
       >
         <Input
           placeholder="Type your email"
@@ -190,6 +186,7 @@ const AccountDetail = () => {
 
           },
         ]}
+        hasFeedback
       >
         <Input
           placeholder="Type your number"
@@ -219,7 +216,7 @@ const AccountDetail = () => {
       <Form.Item
         id="confirmPassword"
         name="confirmPassword"
-        label="New ConfirmPassword"
+        label=" ConfirmPassword"
         dependencies={["password"]}
         rules={[
           // {
@@ -245,8 +242,8 @@ const AccountDetail = () => {
         label="Role"
       >
         <Select placeholder="select role">
-          {accountStatus.map((item, index) => (
-            <Option key={index} value={item.id}>{item.type}</Option>
+          {roleStatus.map((item, index) => (
+            <Option key={index} value={item.key}>{item.key} - {item.type}</Option>
           ))}
         </Select>
       </Form.Item>

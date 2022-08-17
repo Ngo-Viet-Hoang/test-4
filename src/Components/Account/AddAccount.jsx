@@ -1,19 +1,9 @@
 import {
-  AutoComplete,
   Button,
-  Cascader,
-  Checkbox,
-  Col,
   Form,
   Input,
-  InputNumber,
-  Row,
   Select,
-  Radio,
-  Rate,
-  Slider,
-  Switch,
-  Upload,
+
 } from 'antd';
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import accountService from '../../Service/AccountService';
@@ -88,7 +78,7 @@ const AddAccount = () => {
       }).catch(err => {
         console.log(err);
       })
-    // navigate("/admin/account/list")
+    navigate("/admin/account/list")
   };
 
   const onFinishFailed = (errorInfo) => {

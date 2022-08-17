@@ -4,7 +4,10 @@ import {
     HomeFilled,
     IdcardOutlined,
     FileSearchOutlined,
-    TeamOutlined
+    TeamOutlined,
+    UnorderedListOutlined,
+    UserAddOutlined,
+    PlusCircleOutlined
 } from '@ant-design/icons';
 import { Image } from 'antd';
 import 'antd/dist/antd.css';
@@ -12,6 +15,7 @@ import '../../index.css'
 import { Layout, Menu } from 'antd';
 import { useState } from 'react';
 import { Link, NavLink, useLocation } from "react-router-dom";
+
 const { Sider } = Layout;
 
 const ManagerSidebar = () => {
@@ -32,14 +36,14 @@ const ManagerSidebar = () => {
             children: [
                 {
                     key: "addFood",
-                    icon: <IdcardOutlined />,
+                    icon: <PlusCircleOutlined />,
                     title: "Add New Food",
                     link: "/admin/food/create"
                 },
                 {
                     key: "foodList",
-                    icon: <FileSearchOutlined />,
-                    title: "Danh sach food",
+                    icon: <UnorderedListOutlined />,
+                    title: " Food List",
                     link: "/admin/food/list"
                 },
             ]
@@ -49,14 +53,14 @@ const ManagerSidebar = () => {
             title: "Category",
             children: [
                 {
-                    key: "myinfo",
-                    icon: <IdcardOutlined />,
+                    key: "addCategory",
+                    icon: <PlusCircleOutlined />,
                     title: "Add New Category",
                     link: "/admin/category/create"
                 },
                 {
-                    key: "newsManager",
-                    icon: <FileSearchOutlined />,
+                    key: "categoryList",
+                    icon: <UnorderedListOutlined/>,
                     title: "Category List",
                     link: "/admin/category/list"
                 },
@@ -69,13 +73,13 @@ const ManagerSidebar = () => {
             children: [
                 {
                     key: "addnewAccount",
-                    icon: <IdcardOutlined />,
+                    icon: <UserAddOutlined />,
                     title: "Add New Account",
                     link: "/admin/account/create"
                 },
                 {
-                    key: "newsManager",
-                    icon: <FileSearchOutlined />,
+                    key: "AccountList",
+                    icon: <UnorderedListOutlined />,
                     title: "Account List",
                     link: "/admin/account/list"
                 },
@@ -88,7 +92,7 @@ const ManagerSidebar = () => {
             children: [
                 {
                     key: "order-list",
-                    icon: <IdcardOutlined />,
+                    icon: <UnorderedListOutlined />,
                     title: "Order List",
                     link: "/admin/order/list"
                 },
@@ -111,7 +115,7 @@ const ManagerSidebar = () => {
                                 </NavLink>
                             </Menu.Item>
                         ) : (
-                            <Menu.SubMenu key={item.key} title={item.title} icon={<UserOutlined />}>
+                            <Menu.SubMenu key={item.key} title={item.title}>
                                 {item.children.map((child) =>
                                     <Menu.Item key={child.key}>
                                         <Link className="d-flex align-items-center" to={child.link}>
