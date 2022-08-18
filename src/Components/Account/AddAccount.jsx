@@ -53,7 +53,7 @@ const tailFormItemLayout = {
   },
 };
 
-const REGEX_TEL = "^0\\d{9,11}$";
+// const REGEX_TEL = "^0\\d{9,11}$";
 const AddAccount = () => {
   const [form] = Form.useForm();
   let navigate = useNavigate();
@@ -143,7 +143,7 @@ const AddAccount = () => {
         id="phone"
         name="phone"
         label="Phone Number"
-        pattern={REGEX_TEL}
+        // pattern={REGEX_TEL}
         rules={[
           {
             required: true,
@@ -205,7 +205,7 @@ const AddAccount = () => {
 
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
-          Add
+          Add New
         </Button>
       </Form.Item>
     </Form>
